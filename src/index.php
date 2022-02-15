@@ -1,19 +1,17 @@
 <?php
     if (isset($_POST["submit"])) {
-       $length = $_POST["length"];
-       $width = $_POST["width"];
+       $hours = $_POST["hour"];
+       $check = $_POST["hours"];
     }
 
-    $area = calculateArea($length, $width);
-    $peremeter = calculatePerimeter($length, $width);
+    $res = 0;
 
-    function calculateArea($length, $width) {
-        return $length * $width;
+    if ($check == "mins") {
+        $res = $hours * 60;
+    } else {
+        $res = $hours * 3600;
     }
 
-    function calculatePerimeter($length, $width) {
-        return 2 * ($length + $width);
-    }
 ?>
 
 <!DOCTYPE html>
@@ -26,22 +24,22 @@
     <title>PHP Forms</title>
 </head>
 <body>
-    <h1>Calculate Area & Perimeter</h1>
+    <h1>Time Conversion</h1>
     <div>
         <form action="" method="post">
-            Length Of Rectangle<input type="text" name="length" />
+            <input type="text" name="hour" id="input-box" />
             <br>
-            <br>
-            Width Of Rectangle <input type="text" name="width" />
-            <br>
-            <br>
-            <input type="submit" name="submit" value="Calculate Area & Perimeter" id="btn" />
+            <input type="radio" name="hours" value="mins" />hours to mins<br>
+            <input type="radio" name="hours" value="secs" />hours to seconds<br>
+            <?php
+                if ($check == "mins") {
+                    echo "<p> $hours hours = $res mins</p>";
+                } else {
+                    echo "<p> $hours hours = $res secs</p>";
+                }
+            ?>
+            <input type="submit" name="submit" value="Convert" id="btn" />
         </form>
-
-        <?php 
-             echo "<p> Area is $area sq. mtr. </p>";
-             echo "<p> Peremeter is $peremeter mtr. </p>";
-        ?>
     </div>
 </body>
 </html>

@@ -3,14 +3,20 @@ div {
 	text-align: center;
 }
 
-input {
-	margin: 6px;
+#input-box {
+	margin: 8px;
 	width: 220px;
-	height: 32px;
+	height: 48px;
+}
+
+input {
+	margin: 6px 4px;
 }
 
 #btn {
 	display: inline-block;
-	padding: 4px;
+	padding: 8px;
 	cursor: pointer;
+	width: 180px;
+	margin: 16px;
 }
