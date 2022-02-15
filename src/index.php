@@ -1,38 +1,19 @@
 <?php
-   if (isset($_POST["calculate"])) {
-       $num1 = $_POST["num-1"];
-       $num2 = $_POST["num-2"];
-       $op = $_POST["calculate"];
-   }
+    if (isset($_POST["submit"])) {
+       $length = $_POST["length"];
+       $width = $_POST["width"];
+    }
 
-   $res = calculator($num1, $num2, $op);
+    $area = calculateArea($length, $width);
+    $peremeter = calculatePerimeter($length, $width);
 
-   function calculator($num1, $num2, $op) {
-       $res = 0;
+    function calculateArea($length, $width) {
+        return $length * $width;
+    }
 
-       switch ($op) {
-           case "+":
-             $res = $num1 + $num2;
-             break;
-           case "-":
-             $res = $num1 - $num2;
-             break;
-           case "x":
-             $res = $num1 * $num2;
-             break;
-           case "/":
-             if ($num2 == 0) {
-                 $res = "infinity";
-             } else {
-                 $res = $num1 / $num2;
-             }
-             break;
-           default:
-                $res = "Invalid Operation"; 
-       }
-
-       return $res;
-   }
+    function calculatePerimeter($length, $width) {
+        return 2 * ($length + $width);
+    }
 ?>
 
 <!DOCTYPE html>
@@ -41,20 +22,26 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
     <title>PHP Forms</title>
 </head>
 <body>
-    <h1 style="text-align:center">Calculator Program</h1>
-    <form action="" method="post">
-        Number 1: <input type="text" name="num-1" /> <br>
-        Number 2: <input type="text" name="num-2" /> <br> <br>
+    <h1>Calculate Area & Perimeter</h1>
+    <div>
+        <form action="" method="post">
+            Length Of Rectangle<input type="text" name="length" />
+            <br>
+            <br>
+            Width Of Rectangle <input type="text" name="width" />
+            <br>
+            <br>
+            <input type="submit" name="submit" value="Calculate Area & Perimeter" id="btn" />
+        </form>
 
-        <input type="submit" name="calculate" value="+">
-        <input type="submit" name="calculate" value="-">
-        <input type="submit" name="calculate" value="x">
-        <input type="submit" name="calculate" value="/">
-    </form>
-
-    <?php echo $res; ?>
+        <?php 
+             echo "<p> Area is $area sq. mtr. </p>";
+             echo "<p> Peremeter is $peremeter mtr. </p>";
+        ?>
+    </div>
 </body>
 </html>
