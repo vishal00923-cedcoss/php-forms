@@ -1,16 +1,46 @@
 <?php
-    if (isset($_POST["submit"])) {
-       $hours = $_POST["hour"];
-       $check = $_POST["hours"];
-    }
+$target_dir = "uploads/";
+$target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
+$uploadOk = 1;
+$imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
 
-    $res = 0;
+if (isset($_POST["submit"])) {
+  $check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
 
-    if ($check == "mins") {
-        $res = $hours * 60;
-    } else {
-        $res = $hours * 3600;
-    }
+  if ($check !== false) {
+    echo "File is an image - " . $check["mime"] . ".";
+    $uploadOk = 1;
+  } else {
+    echo "File is not an image.";
+    $uploadOk = 0;
+  }
+}
+
+if (file_exists($target_file)) {
+  echo "Sorry, file already exists.";
+  $uploadOk = 0;
+}
+
+if ($_FILES["fileToUpload"]["size"] > 2000000) {
+  echo "Sorry, your file is too large.";
+  $uploadOk = 0;
+}
+
+if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
+&& $imageFileType != "gif" ) {
+  echo "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
+  $uploadOk = 0;
+}
+
+if ($uploadOk == 0) {
+  echo "Sorry, your file was not uploaded.";
+} else {
+  if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
+    echo "The file ". htmlspecialchars(basename( $_FILES["fileToUpload"]["name"])). " has been uploaded.";
+  } else {
+    echo "Sorry, there was an error uploading your file.";
+  }
+}
 
 ?>
 
@@ -24,22 +54,13 @@
     <title>PHP Forms</title>
 </head>
 <body>
-    <h1>Time Conversion</h1>
+    <h1>Upload Image</h1>
     <div>
-        <form action="" method="post">
-            <input type="text" name="hour" id="input-box" />
-            <br>
-            <input type="radio" name="hours" value="mins" />hours to mins<br>
-            <input type="radio" name="hours" value="secs" />hours to seconds<br>
-            <?php
-                if ($check == "mins") {
-                    echo "<p> $hours hours = $res mins</p>";
-                } else {
-                    echo "<p> $hours hours = $res secs</p>";
-                }
-            ?>
-            <input type="submit" name="submit" value="Convert" id="btn" />
-        </form>
+        <form action="" method="post" enctype="multipart/form-data">
+        Select image to upload:
+        <input type="file" name="fileToUpload" id="fileToUpload">
+        <input type="submit" value="Upload Image" name="submit" id="btn">
+</form>
     </div>
 </body>
 </html>
