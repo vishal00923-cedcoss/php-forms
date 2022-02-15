@@ -1,31 +1,38 @@
 <?php
-    $units = $_GET["unit"];
+   if (isset($_POST["calculate"])) {
+       $num1 = $_POST["num-1"];
+       $num2 = $_POST["num-2"];
+       $op = $_POST["calculate"];
+   }
 
-    $bill = calculateBill($units);
+   $res = calculator($num1, $num2, $op);
 
-    function calculateBill($units) {
-        $first = 3.50;
-        $second = 4.00;
-        $third = 5.20;
-        $fourth = 6.50;
-    
-        if($units <= 50) {
-            $bill = $units * $first;
-        } else if($units > 50 && $units <= 100) {
-            $temp = 50 * $first;
-            $remUnits = $units - 50;
-            $bill = $temp + ($remUnits * $second);
-        } else if($units > 100 && $units <= 200) {
-            $temp = (50 * $first) + (100 * $second);
-            $remUnits = $units - 150;
-            $bill = $temp + ($remUnits * $third);
-        } else {
-            $temp = (50 * $first) + (100 * $second) + (100 * $third);
-            $remUnits = $units - 250;
-            $bill = $temp + ($remUnits * $fourth);
-        }
-        return $bill;
-    }
+   function calculator($num1, $num2, $op) {
+       $res = 0;
+
+       switch ($op) {
+           case "+":
+             $res = $num1 + $num2;
+             break;
+           case "-":
+             $res = $num1 - $num2;
+             break;
+           case "x":
+             $res = $num1 * $num2;
+             break;
+           case "/":
+             if ($num2 == 0) {
+                 $res = "infinity";
+             } else {
+                 $res = $num1 / $num2;
+             }
+             break;
+           default:
+                $res = "Invalid Operation"; 
+       }
+
+       return $res;
+   }
 ?>
 
 <!DOCTYPE html>
@@ -37,19 +44,17 @@
     <title>PHP Forms</title>
 </head>
 <body>
-    <div class="container">
-        <form action="" method="get">
-            Enter Bill Units : <input type="number" name="unit" />
-            <br>
-            <br>
-            <input type="submit" name="submit" value="Submit" />
+    <h1 style="text-align:center">Calculator Program</h1>
+    <form action="" method="post">
+        Number 1: <input type="text" name="num-1" /> <br>
+        Number 2: <input type="text" name="num-2" /> <br> <br>
 
-            <br>
-            <br>
-            <?php 
-                 echo number_format($bill, 2);
-             ?>
-        </form>
-    </div>
+        <input type="submit" name="calculate" value="+">
+        <input type="submit" name="calculate" value="-">
+        <input type="submit" name="calculate" value="x">
+        <input type="submit" name="calculate" value="/">
+    </form>
+
+    <?php echo $res; ?>
 </body>
 </html>
